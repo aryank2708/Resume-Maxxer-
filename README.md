@@ -80,3 +80,12 @@ This project is licensed under the MIT License. See [LICENSE](./LICENSE) for mor
 
 ---
 
+
+<img width="1674" height="418" alt="image" src="https://github.com/user-attachments/assets/ce57d85b-4406-40b6-b829-4d00d0070bbf" />
+<img width="1621" height="573" alt="image" src="https://github.com/user-attachments/assets/7917cc65-9703-4247-a8d9-8bf8729ef18c" />
+
+<img width="647" height="956" alt="image" src="https://github.com/user-attachments/assets/0497047e-01c4-47f7-b5fe-9d5569fc1951" />
+![Image 27-10-25 at 5 30 PM](https://github.com/user-attachments/assets/8e21abb7-d184-46b4-aaa2-f78e069181ad)
+
+
+
