@@ -1,0 +1,986 @@
+{
+  "name": "Resume Maxxing",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Resume Maxxer🧏🏻‍♂️",
+        "formDescription": "An AI-powered tool that tailors your resume to perfectly match any job description for maximum hiring impact within 5 minutes!",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Company's Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Company's URL"
+            },
+            {
+              "fieldLabel": "Job Title / Role",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Current Resume",
+              "fieldType": "file",
+              "multipleFiles": false,
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Job Description",
+              "fieldType": "file",
+              "multipleFiles": false,
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        1120,
+        544
+      ],
+      "id": "b6e8b32e-8d94-4647-840b-ddd6d4fca78c",
+      "name": "On form submission",
+      "webhookId": "114d6afa-5481-4eda-a372-77ed4e848fdf"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=\n**Situation**\nA candidate is preparing their resume for submission to a specific role and needs strategic optimization to improve their chances of passing ATS screening and being shortlisted by recruiters.\n\nRESUME : {{ $json.Analysed_resume }}\n\nJOB DESCRPTION IN DETAIL : {{ $json.Analysed_JD }}\n\n**Task**\nThe assistant should:\n1. Analyze the provided resume and job description line-by-line to identify keyword gaps, skill alignments, and experience overlaps\n2. Enhance each resume bullet point by incorporating job description keywords naturally, adding specific quantifiable metrics (percentages, numbers, timeframes, revenue/cost impact), and restructuring for maximum relevance to the role\n3. Deliver the fully optimized resume as a standalone document under a \"Resume\" heading with no commentary\n4. Provide all modifications, side-by-side comparisons, rationale for changes, and final ATS keyword match percentage under a separate \"Changes Made\" heading\n5. Calculate and report the final ATS keyword match percentage achieved\n\n**Objective**\nCreate a resume that maximizes ATS compatibility and recruiter engagement while preserving the candidate's authentic professional narrative and maintaining at least 70% of original content.\n\n**Knowledge**\nContent that must remain unchanged:\n- Personal identifying information (name, contact details, phone, email, location)\n- Educational credentials, institutions, and graduation dates\n- Education section exactly as provided\n- Professional identity and career chronology\n- Section headers and overall resume structure\n\nOptimization approach:\n- Extract high-value keywords from the job description and integrate them naturally into experience descriptions\n- Add specific, measurable metrics to every achievement (percentages, dollar amounts, timeframes, efficiency gains, user/customer impact)\n- Restructure each bullet point to lead with impact and align with job description priorities\n- Keep each bullet point to 2-3 lines maximum, ensuring concise, achievement-focused language\n- Maintain the candidate's unique professional voice and authentic career narrative throughout\n- Review each bullet point individually for improvement opportunities before finalizing\n\n**Output Structure**\nProvide output in exactly 2 sections:\n\nSection 1 - \"Resume\": Display only the fully optimized resume content with no additional commentary, analysis, or explanations.\n\nSection 2 - \"Changes Made\": Include all of the following:\n- Brief rationale for each significant modification explaining the strategic reasoning and keyword alignment\n- changes shoudl be organised in bullet pointers and heading and subheadings\n- Core keywords incorporated from the job description\n- Final ATS keyword match percentage score",
+        "hasOutputParser": true,
+        "needsFallback": true,
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        2496,
+        544
+      ],
+      "id": "50070318-c569-4b19-9d60-23a2f5486aa0",
+      "name": "Basic LLM Chain2"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2432,
+        768
+      ],
+      "id": "36ead2d7-ae23-447c-b007-4c2ee3df7267",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "EZue7PsLmrWOxQyn",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2672,
+        976
+      ],
+      "id": "994f2004-4cef-471e-8832-4e408f95a3ef",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ootNQQqHryGXirJy",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"optimized resume\": \"California\",\n\t\"changes made\": \"updates content\"\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        2592,
+        768
+      ],
+      "id": "d08e39b3-90ba-4e21-90be-59242beb1257",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a37f8fbb-b4e3-4291-a259-33fc9c9b20f3",
+              "name": "resume_template",
+              "value": "\\documentclass[a4paper]{article}  \\usepackage[top=0.3in, bottom=0.3in, left=0.5in, right=0.5in]{geometry} \\usepackage{titlesec} \\usepackage{enumitem} \\usepackage{hyperref} \\usepackage{parskip} \\usepackage{xcolor} \\usepackage{multicol} \\usepackage{tabularx} \\usepackage{tcolorbox} \\usepackage{array} \\usepackage{helvet}  \\renewcommand{\\familydefault}{\\sfdefault}  % ---------- Styling ---------- \\definecolor{lightgray}{gray}{0.9}  \\newtcolorbox{sectionbox}{     colback=lightgray,     colframe=white,     boxrule=0pt,     arc=0pt,     left=4pt,     right=4pt,     top=1pt,     bottom=1pt,     width=\\dimexpr\\textwidth\\relax }  \\hypersetup{     colorlinks=true,     urlcolor=blue,     linkcolor=black }  \\setlength{\\tabcolsep}{2pt} \\renewcommand{\\arraystretch}{0.9} \\setlist[itemize]{leftmargin=1.5em, topsep=0pt, partopsep=0pt, itemsep=0.5pt, parsep=0pt} \\titlespacing{\\section}{0pt}{0.5pt}{0.5pt} \\setlength{\\parskip}{0pt}  \\begin{document}  % ---------- HEADER ---------- \\vspace*{-0.3cm} \\begin{center}     {\\LARGE\\bfseries JOHN DOE}\\\\     New Delhi, India $\\vert$ +91 9876543210 $\\vert$ \\href{mailto:johndoe@example.com}{johndoe@example.com}\\\\     \\href{https://linkedin.com/in/johndoe}{linkedin.com/in/johndoe} $\\vert$ \\href{https://github.com/johndoe}{github.com/johndoe} \\end{center}  % ---------- EDUCATION ---------- \\begin{sectionbox}\\textbf{EDUCATION}\\end{sectionbox} \\vspace{-0.3em} \\begin{tabular*}{\\textwidth}{l @{\\extracolsep{\\fill}} r}     \\textbf{Netaji Subhas University of Technology}, New Delhi & 2021 -- 2025 \\\\     B.Tech in Computer Science & CGPA: 8.9/10 \\\\[0.5em]     \\textbf{Delhi Public School}, Delhi & 2021 \\\\     Senior Secondary (XII), CBSE & 92\\% \\\\[0.5em]     \\textbf{ABC Public School}, Delhi & 2019 \\\\     Secondary (X), CBSE & 90\\% \\\\ \\end{tabular*}  % ---------- EXPERIENCE ---------- \\begin{sectionbox}\\textbf{INTERNSHIPS AND EXPERIENCE}\\end{sectionbox} \\vspace{0em} \\begin{tabularx}{\\textwidth}{@{}X r@{}}  \\textbf{Software Development Intern, ABC Technologies} & Jun -- Aug 2024 \\\\  \\textit{Backend Development and Automation} & \\end{tabularx} \\vspace{-0.2em} \\begin{itemize}     \\item Developed REST APIs in Python Flask for data pipelines and authentication.     \\item Automated workflows reducing manual effort by \\textbf{40\\%}.     \\item Collaborated in a 5-member agile team for sprint planning and QA testing. \\end{itemize}  \\vspace{0.4em} \\begin{tabularx}{\\textwidth}{@{}X r@{}}  \\textbf{Data Analyst Intern, XYZ Analytics} & Jan -- Apr 2023 \\\\  \\textit{Data Cleaning, Visualization, and Reporting} &  \\end{tabularx} \\vspace{-0.2em} \\begin{itemize}     \\item Processed 100K+ data rows using SQL and Excel macros.     \\item Created Power BI dashboards increasing reporting efficiency by \\textbf{60\\%}.     \\item Coordinated with clients to design actionable data insights. \\end{itemize}  % ---------- SKILLS ---------- \\begin{sectionbox}\\textbf{SKILLS}\\end{sectionbox} \\vspace{0em} \\begin{tabularx}{\\textwidth}{@{}>{\\bfseries}l X@{}}  Programming Languages: & Python, C++, JavaScript, SQL \\\\ Data Analytics Tools: & Excel, Power BI, Pandas, NumPy, Matplotlib \\\\ Databases: & MySQL, PostgreSQL, MongoDB, BigQuery \\\\ Web Technologies: & HTML, CSS, React.js, Node.js, Express.js \\\\ Version Control / Tools: & Git, GitHub, JIRA, Docker (Basics) \\\\ Soft Skills: & Leadership, Teamwork, Problem-Solving, Communication \\\\ \\end{tabularx}  % ---------- PROJECTS ---------- \\begin{sectionbox}\\textbf{PROJECTS}\\end{sectionbox} \\vspace{0em} \\begin{tabularx}{\\textwidth}{@{}X r@{}}  \\textbf{ExpenseTracker Pro (Personal Project)} &   \\end{tabularx} \\vspace{-0.2em} \\begin{itemize}     \\item Built a CLI-based personal expense tracker.     \\item Implemented persistent storage using SQLite3 for 5K+ entries.     \\item \\textbf{Tech Stack:} Python, SQLite3, Pandas \\end{itemize}  \\vspace{0.4em} \\begin{tabularx}{\\textwidth}{@{}X r@{}}  \\textbf{Data Visualization Dashboard (Team Project)} &   \\end{tabularx} \\vspace{-0.2em} \\begin{itemize}     \\item Designed and deployed a Power BI dashboard for retail sales analysis.     \\item Automated ETL using Excel macros and SQL scripts.     \\item Reduced report generation time by \\textbf{55\\%}. \\end{itemize}  % ---------- POSITIONS OF RESPONSIBILITY ---------- \\begin{sectionbox}\\textbf{POSITIONS OF RESPONSIBILITY}\\end{sectionbox} \\vspace{0em} \\begin{tabularx}{\\textwidth}{@{}X r@{}}  \\textbf{President, Tech Club – NSUT} & 2023 -- 2024 \\\\  \\end{tabularx} \\begin{itemize}     \\item Led a 15-member tech team organizing coding hackathons and seminars.     \\item Increased participation by \\textbf{100\\%} through online campaigns and events. \\end{itemize}  \\vspace{0.3em} \\begin{tabularx}{\\textwidth}{@{}X r@{}}  \\textbf{Coordinator, Data Science Society} & 2022 -- 2023 \\\\  \\end{tabularx} \\begin{itemize}     \\item Managed operations for 10+ workshops on analytics and visualization.     \\item Raised sponsorship worth ₹50K by collaborating with industry partners. \\end{itemize}  % ---------- ACHIEVEMENTS ---------- \\begin{sectionbox}\\textbf{EXTRA-CURRICULARS \\& ACHIEVEMENTS}\\end{sectionbox} \\vspace{0em} \\begin{itemize}     \\item 2nd place at National DataHack 2024 among 400+ participants.     \\item Awarded for excellence in automation and leadership initiatives.     \\item Represented university in state-level Table Tennis championship. \\end{itemize}  \\end{document}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2960,
+        544
+      ],
+      "id": "05a13d22-3efc-46bc-8678-c002aa70197a",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=**Situation**\nYou are integrating candidate resume content into a pre-existing LaTeX resume template. The template has specific formatting, structure, headings, and spacing that must be preserved exactly as designed.\n\nCONTENT :{{ $('Basic LLM Chain2').item.json.output['optimized resume'] }}\n\nSTRUCTLE TEMPLATE TO BE USED: {{ $json.resume_template }}\n\n**Task**\nThe assistant should take the provided resume content and insert it into the corresponding sections of the LaTeX template by matching headings and content types. The assistant must maintain all formatting, spacing, structure, and styling of the original template without any modification. Only text content should be replaced or inserted—no changes to LaTeX commands, layout, margins, fonts, or structural elements are permitted.\n\n**Objective**\nProduce compilable LaTeX code that renders to PDF without requiring any edits or adjustments, with the candidate's information properly placed within the template's existing framework.\n\n**Knowledge**\n- Match resume content sections (experience, education, skills, certifications, etc.) to corresponding template headings\n- Preserve all LaTeX formatting commands, packages, and styling exactly as they appear\n- Maintain original spacing, indentation, and visual hierarchy\n- Keep all decorative elements, dividers, and design components unchanged\n- Ensure proper escaping of special characters (e.g., &, %, $, #, _, {, }) in candidate content to prevent LaTeX compilation errors\n- Verify all braces, brackets, and LaTeX commands are properly closed and balanced\n\n**Constraints**\n- Do not modify template structure, headings, fonts, colors, or spacing\n- Do not add or remove sections unless they already exist in the template\n- Do not alter any LaTeX commands or document configuration\n- Do not use newline characters (\\n); instead, create actual line breaks in the output\n- The output must be syntactically valid LaTeX code with zero indentation errors\n- Before finalizing, verify the entire LaTeX code for syntax errors, missing braces, unmatched brackets, and proper command formatting\n- Output only the complete, ready-to-compile LaTeX code with no explanations or additional text\n- NOTE : MOST IMPORTANT, i need the output to be in a paragraph not the traditonal code representation , wherever a new line is needed in the code do it with '\\\\' and not \"\\n\" , completely ban the usage of new line or '\\n' in the output, only a single paragraph output \n- Most important , take care of these issues : The common causes for general LaTeX code failing are structural errors like missing \\end{environment} or the misuse of alignment tabs (&) outside of tables. Other frequent issues include using special characters (#, \\$, \\%, &, \\_, {}) without escaping them (e.g., \\#), or calling undefined commands because a necessary package wasn't included with \\usepackage{...} in the preamble\n-Explicitly include all necessary packages in the preamble, especially for custom features and length calculations (e.g., use \\usepackage{calc} if you use \\dimexpr).\"",
+        "needsFallback": true,
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        3184,
+        544
+      ],
+      "id": "e797f74c-ee36-443a-9ac6-35d75c31e5eb",
+      "name": "Basic LLM Chain3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9f8ca906-38bb-4773-ac7b-c284f87e648c",
+              "name": "url",
+              "value": "={{ $json.content.download_url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3984,
+        544
+      ],
+      "id": "537c11cc-3c58-4d96-a385-2545d331d2c3",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the raw GitHub URL from input\nconst rawUrl = $input.first().json.url;\n\n// Build Overleaf link\nconst overleafUrl = `https://www.overleaf.com/docs?snip_uri=${rawUrl}`;\n\n// Output\nreturn [{ overleafUrl }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4208,
+        544
+      ],
+      "id": "6301944d-aca5-4b47-9ebf-34cabbee35f5",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "base": {
+          "__rl": true,
+          "value": "appjf0prE4wRQCw9i",
+          "mode": "list",
+          "cachedResultName": "Resume Maxxing",
+          "cachedResultUrl": "https://airtable.com/appjf0prE4wRQCw9i"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblzs9ix3NenRSyvV",
+          "mode": "list",
+          "cachedResultName": "n8n Form Copy",
+          "cachedResultUrl": "https://airtable.com/appjf0prE4wRQCw9i/tblzs9ix3NenRSyvV"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Company Name": "={{ $('On form submission').item.json['Company\\'s Name'] }}",
+            "Company URL": "={{ $('On form submission').item.json['Company\\'s URL'] }}",
+            "Name": "={{ $('On form submission').item.json.Name }}",
+            "Job title": "={{ $('On form submission').item.json['Job Title / Role'] }}",
+            "Updated Resume": "={{ $json.overleafUrl }}",
+            "notes": "={{ $('Basic LLM Chain2').item.json.output['changes made'] }}",
+            "Email": "={{ $('On form submission').item.json.Email }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true
+            },
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Company URL",
+              "displayName": "Company URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Job title",
+              "displayName": "Job title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Current Resume",
+              "displayName": "Current Resume",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Job Description",
+              "displayName": "Job Description",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Updated Resume",
+              "displayName": "Updated Resume",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "notes",
+              "displayName": "notes",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Generate Resume",
+              "displayName": "Generate Resume",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Table 2",
+              "displayName": "Table 2",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Generate Resume 2",
+              "displayName": "Generate Resume 2",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Generate Resume 3",
+              "displayName": "Generate Resume 3",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Analysed Job Desc",
+              "displayName": "Analysed Job Desc",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        4432,
+        544
+      ],
+      "id": "76af4170-ee47-4657-8780-0672e91037a8",
+      "name": "Create or update a record2",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "qrjMnTpi9d0oQ3rb",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: { ...items[0].json, type: 'resume' },\n    binary: { Current_Resume: items[0].binary.Current_Resume }\n  },\n  {\n    json: { ...items[0].json, type: 'jobdesc' },\n    binary: { Job_Description: items[0].binary.Job_Description }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        544
+      ],
+      "id": "2a2e9433-c5c1-4a92-8376-edbf5836adf3",
+      "name": "Code in JavaScript3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8b97e0e4-1b9d-415d-a946-d1fae70e6421",
+              "leftValue": "={{$json[\"type\"]}}",
+              "rightValue": "resume",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1568,
+        544
+      ],
+      "id": "d20d66f1-91b9-4b0f-b085-d7d7492906b2",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2240,
+        544
+      ],
+      "id": "06997c67-b207-4bb7-9881-c1cd8c813748",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "resource": "document",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "text": "=**Situation**\nYou have a job description file that contains information about a specific role, company, and position. You need to understand the opportunity deeply and assess how a prospective candidate could be an ideal match for this role.\n\n\nCompany Name : {{ $json['Company Name'] }}\n\ncompany's url :  {{ $json['Company URL'] }}\n\nRole / posiiton : {{ $json['Job title'] }}\n\njob descption pdf : {{ $json['Current Resume'][0].url }}\n**Task**\nThe assistant should:\n1. Extract and identify the company name and job title from the provided job description file\n2. Conduct a comprehensive search to gather detailed information about the company (mission, culture, values, recent news, industry position, growth trajectory)\n3. Analyze the job description to identify key responsibilities, required skills, experience levels, and cultural fit indicators\n4. Create an elongated and detailed assessment explaining how a strong candidate could position themselves as an excellent match for this specific role\n5. Synthesize all findings into a cohesive narrative that connects the candidate profile to the company's needs and the role's requirements\n\n**Objective**\nTo provide a thorough, actionable guide that helps a prospective candidate understand not just what the role requires, but why they would be a strong fit within the broader context of the company, its mission, and the specific position's strategic importance.\n\n**Knowledge**\n- Focus on identifying alignment between candidate strengths and both explicit and implicit job requirements\n- Consider cultural fit, growth opportunities, and how the role contributes to the company's broader goals\n- Look for patterns in the job description that reveal priorities, challenges, and success metrics\n- Research should include company size, industry, competitive landscape, recent developments, and organizational structure where relevant to understanding the role's context\n- The assessment should be detailed enough to serve as a preparation guide for interviews or applications",
+        "inputType": "binary",
+        "binaryPropertyName": "Job_Description",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        448
+      ],
+      "id": "ce6bad7e-b254-4020-a5be-5f973a2e90a3",
+      "name": "Analyze JD3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ootNQQqHryGXirJy",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "document",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "text": "**Situation**\nA resume document needs to be converted from its current format into a structured, easy-to-read text format while maintaining 100% original content integrity.\n\n**Task**\nConvert the attached resume into a structured text format using:\n- Clear headings\n- Bulleted pointers\n- Sub-pointers where applicable\n- Preserve exact original wording and information\n\n**Objective**\nCreate a clean, professionally formatted text representation of the resume that maintains the original document's precise content and professional appearance.\n\n**Knowledge**\n- No content modifications are permitted\n- Formatting should prioritize readability\n- Maintain original section hierarchies\n- Preserve all original details exactly as they appear in the source document\n\n**Additional Instructions**\nThe assistant should:\n- Use hierarchical formatting with clear section breaks\n- Utilize markdown or simple text formatting for structure\n- Ensure each section is clearly delineated\n- Retain original font and style information where possible\n- Pay special attention to maintaining exact wording\n- Do not add, remove, or modify any text content\n\n**Critical Note**\nSince no PDF or URL was actually attached in this conversation, the assistant will require the specific resume document to complete the task. Please provide the resume file or URL for conversion.",
+        "inputType": "binary",
+        "binaryPropertyName": "Current_Resume",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        640
+      ],
+      "id": "d22869ec-0605-4ff7-8fd7-d7d00f02cd41",
+      "name": "Analyze Resume2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ootNQQqHryGXirJy",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c7e75a26-5243-4153-bf1d-6abef332b263",
+              "name": "Analysed_JD",
+              "value": "={{ $json.content.parts[0].text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2016,
+        448
+      ],
+      "id": "d4bf88b4-d017-4333-bc48-57e45d6bf12b",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0698926a-7a74-4fea-9879-f97f4565280d",
+              "name": "Analysed_resume",
+              "value": "={{ $json.content.parts[0].text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2016,
+        640
+      ],
+      "id": "4a092900-38da-4304-a0f5-158c3aee14d3",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.fields.Email }}",
+        "subject": "Thanks For Using Resume Maxxing🧏🏻‍♂️",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <title>Your Updated Resume is Ready</title>\n  <style>\n    body {\n      font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n      background-color: #fff;\n      color: #111;\n      margin: 0;\n      padding: 50px 15px;\n      line-height: 1.6;\n      -webkit-font-smoothing: antialiased;\n      -moz-osx-font-smoothing: grayscale;\n    }\n    .container {\n      max-width: 580px;\n      margin: 0 auto;\n      background: #fff;\n      border-radius: 8px;\n      padding: 40px 35px;\n      box-shadow: 0 4px 10px rgba(0,0,0,0.05);\n      border: 1px solid #ddd;\n    }\n    h2 {\n      font-weight: 600;\n      font-size: 24px;\n      color: #111;\n      text-align: center;\n      margin-bottom: 24px;\n      letter-spacing: 0.3px;\n    }\n    p {\n      font-size: 16px;\n      color: #333;\n      margin: 18px 0;\n    }\n    a, a:visited {\n      color: #000;\n      text-decoration: none;\n      font-weight: 600;\n    }\n    .button-container {\n      text-align: center;\n      margin: 40px 0 30px 0;\n    }\n    .button {\n      background: #000;\n      color: #fff;\n      padding: 14px 42px;\n      font-size: 16px;\n      border-radius: 8px;\n      font-weight: 600;\n      cursor: pointer;\n      display: inline-block;\n      transition: background-color 0.3s ease;\n    }\n    .button:hover {\n      background: #444;\n      text-decoration: none;\n    }\n    .changes {\n      background: #f9f9f9;\n      border-left: 5px solid #000;\n      padding: 20px 24px;\n      border-radius: 6px;\n      color: #444;\n      font-size: 15px;\n      line-height: 1.5;\n      white-space: pre-wrap;\n      margin-bottom: 30px;\n      box-sizing: border-box;\n      font-weight: 400;\n    }\n    .note {\n      font-size: 14px;\n      font-style: italic;\n      color: #666;\n      border-left: 4px solid #ccc;\n      padding-left: 18px;\n      margin-bottom: 35px;\n      max-width: 520px;\n    }\n    .latex-note {\n      font-size: 12px;\n      font-style: italic;\n      color: #999;\n      border-left: 3px solid #ccc;\n      padding-left: 15px;\n      margin-top: 40px;\n      max-width: 520px;\n    }\n    .footer {\n      font-size: 13px;\n      color: #888;\n      text-align: center;\n      border-top: 1px solid #eee;\n      padding-top: 25px;\n    }\n    .footer a {\n      font-weight: 500;\n      color: #000;\n      text-decoration: none;\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <h2>Your Updated Resume is Ready</h2>\n\n    <p>Hi {{ $json.fields.Name }},</p>\n\n    <p>\n      Your resume has been redesigned and optimized for the role of\n      <strong>{{ $json.fields['Job title'] }}</strong> at\n      <a href=\"{{ $json.fields['Company URL'] }}\" target=\"_blank\">{{ $json.fields['Company Name'] }}</a>.\n    </p>\n\n    <p>\n      The updated version highlights your most relevant skills and experiences for this position. Click below to view or download it:\n    </p>\n\n    <div class=\"button-container\">\n      <a href=\"{{ $json.fields['Updated Resume'] }}\" target=\"_blank\" class=\"button\">View Updated Resume</a>\n    </div>\n\n    <div class=\"changes\">\n      <strong>Summary of Updates:</strong><br/><br/>\n      {{ $json.fields.notes }}\n    </div>\n\n    <div class=\"note\">\n      This tool focuses primarily on optimizing your resume content. The updated content has been formatted to fit an Overleaf LaTeX resume template for reference. You can make further edits as you see fit.\n    </div>\n\n    <p>\n      This version is designed to help you stand out in applicant tracking systems and demonstrate strong technical alignment. I hope it helps you make a great impression!\n    </p>\n\n    <div class=\"latex-note\">\n      <small>\n        If you encounter any LaTeX compilation errors while using the updated resume, a quick solution is to copy the code into any AI-based syntax checker or LaTeX online editor to automatically identify and fix syntax issues. After corrections, you can recompile the updated version.\n      </small>\n    </div>\n\n    <p>\n      Warm regards,<br/>\n      <strong>Aryan</strong>\n    </p>\n\n    <div class=\"footer\">\n      Connect with me on <a href=\"https://www.linkedin.com/in/aryankhudlain/\" target=\"_blank\">LinkedIn</a><br/>\n      © 2025 Aryan | All rights reserved\n    </div>\n  </div>\n</body>\n</html>\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        4656,
+        544
+      ],
+      "id": "3ea56862-d7ee-4108-8695-f88291ee3a9b",
+      "name": "Send a message",
+      "webhookId": "83a1e0eb-4f6b-4a1e-974d-a75286b87843",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "7R0MdDhH2cN0HqAD",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "=https://api.github.com/repos/aryank2708/resume-maxxing/contents/new/{{ $('On form submission').item.json.Email }}_{{ Math.floor(Math.random() * 10000) }}.tex",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "bearer "
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"message\": \"Add new resume tex file\",\n  \"content\": \"{{ $json.content }}\",\n  \"branch\": \"main\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3760,
+        544
+      ],
+      "id": "2191fc11-9bfe-4ea0-9bbf-8280951e8c8e",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  item.json.content = Buffer.from(item.json.text, 'utf8').toString('base64');\n  return item;\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3536,
+        544
+      ],
+      "id": "960dfba6-fef0-4622-8f11-a31a533eebbc",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        3184,
+        768
+      ],
+      "id": "32edb745-0292-476f-930d-a3fabe54ecc1",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ootNQQqHryGXirJy",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2512,
+        896
+      ],
+      "id": "09c14dac-d9e6-47c9-99aa-a177d095321b",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ootNQQqHryGXirJy",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        3296,
+        848
+      ],
+      "id": "95025cb3-400b-4820-9a13-00549ff3a23e",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "EZue7PsLmrWOxQyn",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain2",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain3": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Create or update a record2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Analyze Resume2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Analyze JD3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze JD3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Resume2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Create or update a record2": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain2",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain3",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "54a037d8-0eb7-455a-907a-81c406619b68",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fb721541008194b0e1111d9009c7694d101db5259f25fa475f768e5d791ee26e"
+  },
+  "id": "MqCvAsBlMxhuE0CV",
+  "tags": []
+}
