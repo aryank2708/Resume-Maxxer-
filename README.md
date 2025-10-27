@@ -57,13 +57,13 @@ Resume Maxxer🧏🏻‍♂️ is an end-to-end, AI-powered workflow for automat
 
 ## 🚦 Deployment & Usage
 
-1. Clone/download this repo.
-2. Add your API keys in environment/config file as per `docs/SETUP.md`.
-3. Import the workflow JSON into your n8n instance.
-4. Launch the workflow via web form for instant resume optimization.
-5. View logs and user/job analytics in Airtable dashboard.
+1. Download the workflow JSON file from this repository.
+2. Import the JSON file into your n8n instance.
+3. Set up and update all required API keys (OpenAI Gemini, Gmail, Airtable, GitHub, Overleaf) in your environment or n8n credentials.
+4. Create a new Airtable base with all the required fields as documented.
+5. Run the workflow—users can now submit their resume and job description, and the automation takes care of the rest.
+6. Track usage, logs, and analytics conveniently in your Airtable dashboard.
 
-Full instructions in `/docs/SETUP.md`.
 
 ---
 
