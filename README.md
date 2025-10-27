@@ -1,63 +1,80 @@
 Resume Maxxer🧏🏻‍♂️
 AI-Driven No-Code Resume Optimization Tool Built with n8n Automation
 
-Overview
-Resume Maxxer🧏🏻‍♂️ is an innovative AI-powered workflow that automates resume rewriting and optimization for job applications. Built using the no-code platform n8n, it integrates multiple APIs to analyze, modify, and generate ATS-friendly resumes tailored to specific job descriptions. This eliminates the need for users to manually edit their resumes for every job application.
+🚀 Overview
+Resume Maxxer🧏🏻‍♂️ is an end-to-end, AI-powered workflow for automating resume rewriting and optimization. Built using the no-code platform n8n, this project integrates multiple APIs (OpenAI Gemini, Gmail, Airtable, GitHub, Overleaf) to dynamically tailor and deliver ATS-friendly resumes based on user-submitted job descriptions.
 
-Core Technologies
-No-code automation using n8n
+💡 Key Features
+AI-Powered Keyword Enhancement: Automatically rewrites your resume for each job description using state-of-the-art LLMs.
 
-AI content analysis with OpenAI Gemini
+No-Code, API-First Design: Seamless integration with OpenAI Gemini, Gmail, Airtable, GitHub, and Overleaf through n8n.
 
-Email delivery via Gmail API
+One-Click Automation: Users upload their resume and job description—everything else is handled for them.
 
-Data management and tracking with Airtable
+LaTeX Formatting: Outputs resume in polished LaTeX Overleaf template.
 
-Version control and hosting using GitHub API
+Instant Email Delivery: Resumes are emailed directly to the user.
 
-Resume formatting and live editing on Overleaf API
+Scalable Data Flow: Tracks and manages user data and jobs in Airtable.
 
-How It Works
-Trigger: Users submit their resume and job description via an n8n web form.
+Community Proof: Supported 150+ users in placement season in just 2 weeks.
 
-Analysis: Gemini AI analyzes the job description and OCR extracts resume content.
+🛠️ Technologies & Integrations
+n8n (No-code Automation)
 
-Research: Deep contextual research on the job and company is done.
+OpenAI Gemini API
 
-Optimization: OpenAI updates the resume content with relevant keywords, preserving original meaning.
+Google Gmail API
 
-LaTeX Conversion: Another AI model converts content to LaTeX and fits it in a premade template.
+Airtable API
 
-GitHub Upload: The LaTeX resume code is uploaded as a public repository on GitHub.
+GitHub API
 
-Overleaf Project: Overleaf API creates a live resume project from the GitHub-hosted code.
+Overleaf API
 
-Email: The user receives an email with the Overleaf project link and usage instructions.
+🌐 How It Works
+User Triggers Workflow: User uploads their resume and job description through an n8n web form.
 
-Features
-Fully automated resume tailoring customized for each job description
+Gemini JD & OCR: The Gemini AI analyzes the JD, performs OCR on the resume, and extracts their content.
 
-AI-powered keyword enhancement for ATS compatibility
+Deep Research: AI runs background research on the role and company for smarter keyword/context selection.
 
-Professional LaTeX formatting via Overleaf templates
+Resume Rewriting: OpenAI intelligently rewrites your resume, optimizing for the job while preserving your authentic experience.
 
-Real-time data visibility and workflow control through Airtable
+LaTeX Rendering: Another model converts the new content into LaTeX, embedding it in a pre-built Overleaf template.
 
-Seamless integration of multiple APIs in low-code/no-code environment
+GitHub API Upload: The LaTeX file is pushed to a public GitHub repo.
 
-Email delivery of personalized resume for instant access
+Overleaf Project Creation: Overleaf API creates a live project using the hosted LaTeX code.
 
-Successfully used by 150+ users in peak placement season
+Automated Email: The completed Overleaf resume link is sent to the user by email along with further editing instructions.
 
-Repository Contents
-n8n workflow JSON file
+📁 Repository Contents
+/workflow/ – n8n workflow JSONs\
 
-Detailed setup and API configuration documentation
+/docs/ – Setup guide, usage instructions
 
-Sample resume outputs and LaTeX template examples
+/samples/ – Sample resumes and LaTeX templates
 
-Getting Started
-Clone the repository and follow the documentation to configure OpenAI, Gmail, Airtable, GitHub, and Overleaf API keys. Customize the workflow to your requirements and deploy your own optimized resume automation.
+Screenshots and architecture diagrams
 
-Contribution
-Contributions, bug reports, and feature requests are welcome! Open a pull request or issue to collaborate on improving the project.
+🚦 Deployment & Usage
+Clone/download this repo.
+
+Add your API keys in environment/config file as per docs/SETUP.md.
+
+Import the workflow JSON into your n8n instance.
+
+Launch the workflow via web form for instant resume optimization.
+
+View logs and user/job analytics in Airtable dashboard.
+
+Full instructions in /docs/SETUP.md.
+
+🤝 Contribution
+Open to PRs, feature requests, issue reporting, and fork-based customization.
+
+Please raise an issue if you have ideas for new integrations or features.
+
+📜 License
+This project is licensed under the MIT License. See LICENSE for more.
